@@ -1837,8 +1837,8 @@ module.exports = grammar({
             repeat(seq(COMMA, $.expression)),
             optional(seq($.kw_bulk, $.kw_collect)), // RETURNING x BULK COLLECT INTO t
             $.kw_into,
-            $.referenced_element,
-            repeat(seq(COMMA, $.referenced_element)),
+            choice($.referenced_element, $.ref_call), // Support collection element: INTO rec.list(i).field
+            repeat(seq(COMMA, choice($.referenced_element, $.ref_call))),
         ),
         _dynamic_returning_clause: $ => seq(
             choice(
@@ -2103,6 +2103,19 @@ module.exports = grammar({
             prec.right(8, seq($.kw_xmlagg, BRACKET_LEFT, $.expression,
                 optional($.order_by_clause), BRACKET_RIGHT,
                 repeat(seq(POINT, $.referenced_element, optional($.parameter))))),
+            // JSON_OBJECT('key' VALUE expr, ... [RETURNING type])
+            prec(8, seq($.kw_json_object, BRACKET_LEFT,
+                $.json_object_item, repeat(seq(COMMA, $.json_object_item)),
+                optional(seq($.kw_returning, $.datatype)),
+                BRACKET_RIGHT)),
+            // JSON_ARRAYAGG(expr [ORDER BY ...] [RETURNING type])
+            prec(8, seq($.kw_json_arrayagg, BRACKET_LEFT, $.expression,
+                optional($.order_by_clause),
+                optional(seq($.kw_returning, $.datatype)),
+                BRACKET_RIGHT)),
+            prec(8, seq($.kw_json_arrayagg, BRACKET_LEFT, $.expression,
+                optional($.order_by_clause),
+                BRACKET_RIGHT)),
             // (expr AS type).method(...) -- object member dispatch cast
             $._object_cast_call,
             // TREAT(expr AS type)[.method()...]
@@ -3218,6 +3231,12 @@ module.exports = grammar({
             optional(seq($.kw_as,
                 choice($.identifier, seq($.kw_evalname, $.expression)))),
         ),
+        json_object_item: $ => choice(
+            // 'literal_key' VALUE expression
+            seq($.literal_string, $.kw_value, $.expression),
+            // KEY identifier VALUE expression
+            seq($.kw_key, $.identifier, $.kw_value, $.expression),
+        ),
         xmltable_column: $ => choice(
             seq($.identifier, $.kw_for, $.kw_ordinality),
             seq($.identifier, $.datatype, // incl. XMLTYPE
@@ -4034,6 +4053,8 @@ module.exports = grammar({
         kw_evalname: _ => kw("evalname"),
         kw_keep: _ => kw("keep"),
         kw_xmlagg: _ => kw("xmlagg"),
+        kw_json_object: _ => kw("json_object"),
+        kw_json_arrayagg: _ => kw("json_arrayagg"),
         kw_mod: _ => kw("mod"),
         kw_bulk_exceptions: _ => kw("bulk_exceptions"),
         kw_treat: _ => kw("treat"),

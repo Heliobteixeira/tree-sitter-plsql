@@ -4335,6 +4335,10 @@
           "named": true
         },
         {
+          "type": "json_object_item",
+          "named": true
+        },
+        {
           "type": "kw_all",
           "named": true
         },
@@ -4495,6 +4499,14 @@
           "named": true
         },
         {
+          "type": "kw_json_arrayagg",
+          "named": true
+        },
+        {
+          "type": "kw_json_object",
+          "named": true
+        },
+        {
           "type": "kw_keep",
           "named": true
         },
@@ -4580,6 +4592,10 @@
         },
         {
           "type": "kw_prior",
+          "named": true
+        },
+        {
+          "type": "kw_returning",
           "named": true
         },
         {
@@ -6173,6 +6189,37 @@
         },
         {
           "type": "xmltable_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "json_object_item",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "kw_key",
+          "named": true
+        },
+        {
+          "type": "kw_value",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         }
       ]
@@ -8095,6 +8142,10 @@
           "named": true
         },
         {
+          "type": "ref_call",
+          "named": true
+        },
+        {
           "type": "referenced_element",
           "named": true
         },
@@ -8589,6 +8640,10 @@
         },
         {
           "type": "order_by_clause",
+          "named": true
+        },
+        {
+          "type": "ref_call",
           "named": true
         },
         {
@@ -9351,6 +9406,10 @@
         },
         {
           "type": "order_by_clause",
+          "named": true
+        },
+        {
+          "type": "ref_call",
           "named": true
         },
         {
@@ -12489,11 +12548,19 @@
     "named": true
   },
   {
+    "type": "kw_json_arrayagg",
+    "named": true
+  },
+  {
     "type": "kw_json_element_t",
     "named": true
   },
   {
     "type": "kw_json_key_list",
+    "named": true
+  },
+  {
+    "type": "kw_json_object",
     "named": true
   },
   {

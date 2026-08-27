@@ -1,0 +1,10 @@
+# Example files (large real-world PL/SQL code for testing)
+examples/*.sql
+examples/*.pks
+examples/*.pkb
+examples/*.prc
+examples/*.fnc
+examples/*.trg
+
+# Keep the README
+!examples/README.md
